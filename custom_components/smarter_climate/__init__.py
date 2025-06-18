@@ -1,16 +1,15 @@
 import logging
 
+import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
-
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
-import homeassistant.helpers.config_validation as cv
 
 from .controller import ThermostatController
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "my_thermostat"
+DOMAIN = "smarter_climate"
 
 CONF_CLIMATE_ENTITY = "climate_entity_id"
 CONF_TEMPERATURE_SENSOR = "temperature_sensor_id"
@@ -19,7 +18,7 @@ CONF_TARGET_TEMPERATURE = "target_temperature"
 CONF_TARGET_HUMIDITY = "target_humidity"
 
 DEFAULT_TARGET_TEMPERATURE = 22.0
-DEFAULT_TARGET_HUMIDITY = 50.0
+DEFAULT_TARGET_HUMIDITY = 60.0
 
 CONFIG_SCHEMA = vol.Schema(
     {
@@ -66,4 +65,4 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     await controller.async_start()
 
-    return True 
+    return True
