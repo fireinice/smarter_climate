@@ -1,0 +1,13 @@
+{
+  "domain": "smarter_climate",
+  "name": "Smarter Climate",
+  "version": "1.0.0",
+  "config_flow": false,
+  "documentation": "https://github.com/your_username/my_thermostat/blob/main/README.md",
+  "issue_tracker": "https://github.com/your_username/my_thermostat/issues",
+  "dependencies": [],
+  "codeowners": ["@fireinice"],
+  "requirements": [],
+  "iot_class": "local_push",
+  "homeassistant": "2023.1.0"
+} 
