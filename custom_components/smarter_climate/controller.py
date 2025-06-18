@@ -48,7 +48,7 @@ class ThermostatController:
         """Start the periodic update timer if not already active."""
         if self._cancel_periodic_update is None:
             _LOGGER.debug("Starting 15-minute periodic update for %s", self._climate_entity_id)
-            self._cancel_periodic_update = self.hass.helpers.event.async_track_time_interval(
+            self._cancel_periodic_update = async_track_time_interval(
                 self.hass,
                 self._async_update_and_control,
                 timedelta(minutes=15),
@@ -64,7 +64,7 @@ class ThermostatController:
     async def async_start(self):
         """Start tracking sensor changes."""
         # Track climate entity state changes
-        self.hass.helpers.event.async_track_state_change(
+        async_track_state_change(
             self.hass,
             self._climate_entity_id,
             self._async_climate_state_listener,
