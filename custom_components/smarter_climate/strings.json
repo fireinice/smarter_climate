@@ -18,17 +18,6 @@
           "target_temperature": "期望的目标温度",
           "target_humidity": "期望的目标湿度"
         }
-      },
-      "reconfigure": {
-        "title": "重新配置智能气候控制",
-        "description": "更新智能气候控制器的参数",
-        "data": {
-          "climate_entity_id": "气候设备实体ID",
-          "temperature_sensor_id": "温度传感器实体ID",
-          "humidity_sensor_id": "湿度传感器实体ID",
-          "target_temperature": "目标温度 (°C)",
-          "target_humidity": "目标湿度 (%)"
-        }
       }
     },
     "error": {
