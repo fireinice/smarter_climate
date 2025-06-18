@@ -1,57 +1,54 @@
-import logging
+"""The Smarter Climate integration."""
+from __future__ import annotations
 
-import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
+import logging
+from dataclasses import dataclass
+from typing import Any
+
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 
+from .const import (
+    DOMAIN,
+    CONF_CLIMATE_ENTITY,
+    CONF_TEMPERATURE_SENSOR,
+    CONF_HUMIDITY_SENSOR,
+    CONF_TARGET_TEMPERATURE,
+    CONF_TARGET_HUMIDITY,
+)
 from .controller import ThermostatController
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "smarter_climate"
+@dataclass
+class SmarterClimateData:
+    """Runtime data for Smarter Climate integration."""
+    controller: ThermostatController
 
-CONF_CLIMATE_ENTITY = "climate_entity_id"
-CONF_TEMPERATURE_SENSOR = "temperature_sensor_id"
-CONF_HUMIDITY_SENSOR = "humidity_sensor_id"
-CONF_TARGET_TEMPERATURE = "target_temperature"
-CONF_TARGET_HUMIDITY = "target_humidity"
 
-DEFAULT_TARGET_TEMPERATURE = 22.0
-DEFAULT_TARGET_HUMIDITY = 60.0
-
-CONFIG_SCHEMA = vol.Schema(
-    {
-        DOMAIN: vol.Schema(
-            {
-                vol.Required(CONF_CLIMATE_ENTITY): cv.entity_id,
-                vol.Required(CONF_TEMPERATURE_SENSOR): cv.entity_id,
-                vol.Required(CONF_HUMIDITY_SENSOR): cv.entity_id,
-                vol.Optional(CONF_TARGET_TEMPERATURE, default=DEFAULT_TARGET_TEMPERATURE): vol.Coerce(float),
-                vol.Optional(CONF_TARGET_HUMIDITY, default=DEFAULT_TARGET_HUMIDITY): vol.Coerce(float),
-            }
-        )
-    },
-    extra=vol.ALLOW_EXTRA,
-)
+# Type alias for config entry
+SmarterClimateConfigEntry = ConfigEntry[SmarterClimateData]
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up the My Thermostat integration."""
-    _LOGGER.info("Setting up My Thermostat integration")
+    """Set up the Smarter Climate integration."""
+    # No longer needed as we use config flow
+    return True
 
-    if DOMAIN not in config:
-        _LOGGER.error("Configuration for %s not found.", DOMAIN)
-        return False
 
-    domain_config = config[DOMAIN]
+async def async_setup_entry(hass: HomeAssistant, entry: SmarterClimateConfigEntry) -> bool:
+    """Set up Smarter Climate from a config entry."""
+    _LOGGER.info("Setting up Smarter Climate integration for entry: %s", entry.title)
 
-    climate_entity_id = domain_config[CONF_CLIMATE_ENTITY]
-    temperature_sensor_id = domain_config[CONF_TEMPERATURE_SENSOR]
-    humidity_sensor_id = domain_config[CONF_HUMIDITY_SENSOR]
-    target_temperature = domain_config[CONF_TARGET_TEMPERATURE]
-    target_humidity = domain_config[CONF_TARGET_HUMIDITY]
+    # Extract configuration data
+    climate_entity_id = entry.data[CONF_CLIMATE_ENTITY]
+    temperature_sensor_id = entry.data[CONF_TEMPERATURE_SENSOR]
+    humidity_sensor_id = entry.data[CONF_HUMIDITY_SENSOR]
+    target_temperature = entry.data[CONF_TARGET_TEMPERATURE]
+    target_humidity = entry.data[CONF_TARGET_HUMIDITY]
 
+    # Create the controller
     controller = ThermostatController(
         hass,
         climate_entity_id,
@@ -61,8 +58,21 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         target_humidity,
     )
 
-    hass.data[DOMAIN] = controller
+    # Store runtime data
+    entry.runtime_data = SmarterClimateData(controller=controller)
 
+    # Start the controller
     await controller.async_start()
 
+    _LOGGER.info("Smarter Climate integration setup completed for entry: %s", entry.title)
+    return True
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: SmarterClimateConfigEntry) -> bool:
+    """Unload a config entry."""
+    _LOGGER.info("Unloading Smarter Climate integration for entry: %s", entry.title)
+    
+    # The controller doesn't have explicit cleanup methods, but we could add them if needed
+    # For now, the event listeners will be automatically cleaned up when the entry is unloaded
+    
     return True

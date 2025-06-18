@@ -2,7 +2,7 @@
   "domain": "smarter_climate",
   "name": "Smarter Climate",
   "version": "1.0.0",
-  "config_flow": false,
+  "config_flow": true,
   "documentation": "https://github.com/your_username/my_thermostat/blob/main/README.md",
   "issue_tracker": "https://github.com/your_username/my_thermostat/issues",
   "dependencies": [],

@@ -1,0 +1,44 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "配置智能气候控制",
+        "description": "设置智能气候控制器的参数",
+        "data": {
+          "climate_entity_id": "气候设备实体ID",
+          "temperature_sensor_id": "温度传感器实体ID",
+          "humidity_sensor_id": "湿度传感器实体ID",
+          "target_temperature": "目标温度 (°C)",
+          "target_humidity": "目标湿度 (%)"
+        },
+        "data_description": {
+          "climate_entity_id": "要控制的气候设备实体ID",
+          "temperature_sensor_id": "用于读取温度的传感器实体ID",
+          "humidity_sensor_id": "用于读取湿度的传感器实体ID",
+          "target_temperature": "期望的目标温度",
+          "target_humidity": "期望的目标湿度"
+        }
+      },
+      "reconfigure": {
+        "title": "重新配置智能气候控制",
+        "description": "更新智能气候控制器的参数",
+        "data": {
+          "climate_entity_id": "气候设备实体ID",
+          "temperature_sensor_id": "温度传感器实体ID",
+          "humidity_sensor_id": "湿度传感器实体ID",
+          "target_temperature": "目标温度 (°C)",
+          "target_humidity": "目标湿度 (%)"
+        }
+      }
+    },
+    "error": {
+      "entity_not_found": "指定的实体未找到",
+      "cannot_connect": "无法连接到设备",
+      "unknown": "未知错误"
+    },
+    "abort": {
+      "already_configured": "该气候设备已经配置",
+      "wrong_climate_entity": "重新配置时不能更改气候设备实体"
+    }
+  }
+} 
